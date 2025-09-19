@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CalCulate</title>
+</head>
+<body>
+    <script>
+        let timeout;
+        // time delay add krne k liye debouces ka use . best example hai search bar
+        function debouncer(){
+            clearTimeout(timeout)
+            timeout= setTimeout(()=>{
+                getRes();
+            },500)
+        }
+         async function getRes(){
+            const a = document.getElementById("pri").value;
+            const b = document.getElementById("rate").value;
+            const c = document.getElementById("tym").value;
+
+            if(c!="" && a!="" && b!=""){
+                const res =await fetch("http://localhost:3000/Calculate?a="+a+"&b="+b+"&c="+c)
+                const data = await res.json()
+
+                document.getElementById("getValue").innerHTML="Total Amount is : "+ data.amount +"\n Interest is " + data.interest;
+            }
+            else{
+                document.getElementById("getValue").innerHTML="You Haven't Entered All Values";
+            }
+        }
+    </script>
+    <!-- for futher improment use text=number -->
+    <input oninput="debouncer()" id="pri" type="number" placeholder="Enter Principal" style="border-radius: 5px;padding:5px;background-color: rgb(160, 150, 150);color: aliceblue;">
+    <br><br>
+    <input oninput="debouncer()" id="rate" type="number" placeholder="Enter Rate" style="border-radius: 5px; padding:5px;background-color: rgb(160, 150, 150);color: aliceblue;">
+    <br><br>
+    <input oninput="debouncer()" id="tym" type="number" placeholder="Enter Time" style="padding:5px; border-radius: 5px;background-color: rgb(160, 150, 150);color: aliceblue;">
+    <br><br>
+    <p id="getValue" style="background-color: rgb(214, 207, 207);"></p>
+</body>
+</html>
